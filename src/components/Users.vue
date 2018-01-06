@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <main>
     <app-header></app-header>
     <form class="container" @submit.prevent="sendInviteByUsername(username)">
       <input type="text" v-model="username" placeholder="username">
@@ -9,7 +9,7 @@
     <ul class="users">
       <app-user v-for="user in users" :key="user.userId" :user="user" actionName="Invite" :action="sendInvite"></app-user>
     </ul>
-  </div>
+  </main>
 </template>
 <script>
   import { mapGetters, mapActions } from 'vuex'
@@ -40,6 +40,7 @@
 </script>
 <style lang="scss" scoped>
   form {
+    padding-top: 2em;
     display: flex;
     input {
       margin-bottom: 0;

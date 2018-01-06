@@ -1,27 +1,16 @@
 <template>
-  <div>
+  <main>
     <app-header></app-header>
-    <ul class="chats" v-if="sortedChats.length">
-      <router-link :to="{name: 'Chat', params: {id: chat.chatId}}" :key="chat.chatId" tag="li" class="row chat" v-for="chat in sortedChats">
-        <img class="profile-pic" src="/static/no-picture.svg" alt="">
-        <div class="panel">
-          <span class="username">
-            {{chat.otherUser.username}}
-          </span>
-          <div class="last-msg" v-if="chat.lastMessage">
-            {{chat.lastMessage.body}}
-          </div>
-          <div v-else>
-            Click to send a message
-          </div>
-        </div>
-      </router-link>
+    <ul v-if="sortedChats.length">
+      <app-chat-link v-for="chat in sortedChats" :key="chat.chatId" :chat="chat"></app-chat-link>
     </ul>
     <p v-else>Looks like you don't have any chats.<br>Find some users <router-link :to="{name: 'Users'}">here!</router-link></p>
-  </div>
+  </main>
 </template>
 <script>
   import Header from './Header.vue'
+  import ChatLink from './ChatLink.vue'
+  
   import { mapGetters } from 'vuex'
   export default {
     computed: {
@@ -47,7 +36,8 @@
       })
     },
     components: {
-      appHeader: Header
+      appHeader: Header,
+      appChatLink: ChatLink
     }
   }
 </script>

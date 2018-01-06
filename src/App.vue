@@ -1,5 +1,20 @@
 <template>
-  <router-view id="view" :class="menuClass"></router-view>
+  <div id="view" :class="menuClass">
+    <div id="app-menu-container">
+      <aside>
+        <nav id="side-menu">
+          <h2>AWS Chat</h2>
+          <ul>
+            <router-link @click="restMenuClass()" tag="li" :to="{name: 'Chats'}">My Chats</router-link>
+            <router-link tag="li" :to="{name: 'Users'}">Users</router-link>
+            <router-link tag="li" :to="{name: 'Invites'}">Invites</router-link>
+            <router-link tag="li" to="/signout">Sign Out</router-link>
+          </ul>
+        </nav>
+      </aside>
+      <router-view id="main"></router-view>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -16,32 +31,75 @@ export default {
 </script>
 
 <style lang="scss">
-  #view {
-    position: relative;
+  aside {
+    width: 75vw;
+    background-color: #4a4a4a;
+    min-height: 100vh;
+  }
+  #side-menu {
+    position: fixed;
+    margin: 0;
+    top: 0;
+    width: 75vw;
+    padding: 1em;
+    box-sizing: border-box;
+    font-size: 1.5em;
+    color: #cccccc;
     
-    &.menu-open {
-      position: relative;
-      left: 75%;
-      animation: scrollLeft .25s ease-in-out;
+    h2 {
+      color: white;
+      text-align: center;
+      font-size: 1.5em;
     }
-    &.menu-closed {
+    
+    ul {
+      margin-top: 1em;
+      margin-left: .25em;
+    }
+    li {
+      display: block;
+      margin-bottom: .25em;
+      
+      &.router-link-active {
+        color: white;
+      }
+    }
+  }
+  #view {
+    width: 100vw;
+    overflow-x: hidden;
+    &.menu-open {
+      #app-menu-container {
+        position: relative;
+        right: 0%;
+        animation: scrollLeft .25s ease-in-out;
+      } 
+    }
+    &.menu-closed #app-menu-container {
       position: relative;
       animation: scrollRight .25s ease-in-out;
-      left: 0%;
+      right: 75%;
     }
   }
+  #app-menu-container {
+    width: 175vw;
+    display: flex;
+    position: relative;
+    right: 75%;
+  }
+  #main {
+    width: 100vw;
+    position: relative;
+  }
   @keyframes scrollRight {
-    from { left: 75%; }
-    to { left: 0%; }
+    from { right: 0%; }
+    to { right: 75%; }
   }
   @keyframes scrollLeft {
-    from { left: 0%; }
-    to { left: 75%; }
+    from { right: 75%; }
+    to { right: 0%; }
   }
   
-  html {
-    overflow-y:hidden;
-  }
   body {
     background-color: #FFD147;
     min-height: 100vh;
@@ -109,6 +167,7 @@ export default {
   }
 
   ul {
+    margin: 0;
     list-style-type: none;
     padding: 0;
   }

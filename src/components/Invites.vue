@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <main>
     <app-header></app-header>
     <ul class="invites" v-if="invites.length">
       <app-user v-for="invite in invites" :key="invite.userId" :user="invite" :action="acceptInvite" actionName="Accept"></app-user>
     </ul>
     <p class="center" v-else>Looks like you don't have any invites.</p>
-  </div>
+  </main>
 </template>
 <script>
   import User from './User.vue'
@@ -30,6 +30,7 @@
 </script>
 <style>
   p.center {
+    padding-top: 2em;
     text-align: center;
   }
 </style>

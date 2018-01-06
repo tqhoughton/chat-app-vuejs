@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <main>
     <h1>AWS Chat</h1>
     <form class="container" @submit.prevent="triggerSignUp">
       <input type="text" placeholder="username" v-model="username">
@@ -12,7 +12,7 @@
       <router-link to="/signin">Sign In</router-link>
       <br><router-link to="/confirm">Confirm</router-link>
     </nav>
-  </div>
+  </main>
 </template>
 <script>
   import { mapActions } from 'vuex'

@@ -13,19 +13,6 @@ import { store } from './store/store'
 
 Vue.use(Router);
 
-/*function loadUser(to, from, next) {
-  store.dispatch('cognito/isAuthenticated').then((isAuth) => {
-    if (!isAuth) {
-      return next({
-        path: '/signin'
-      })
-    }
-    store.dispatch('user/loadUser').then(() => {
-      next()
-    })
-  })
-}*/
-
 function loadChats(to, from, next) {
   console.log('in loadChats...')
   store.dispatch('user/loadChats').then(() => {
@@ -63,6 +50,15 @@ function loadInvites(to, from, next) {
 
 export default new Router({
   mode: 'history',
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition;
+    }
+    if (to.hash) {
+      return { selector: to.hash }
+    }
+    return {x: 0, y: 0}
+  },
   routes: [
     {
       path: "/signup",

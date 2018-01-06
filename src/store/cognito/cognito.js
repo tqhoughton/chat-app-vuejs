@@ -34,12 +34,9 @@ const state = {
 console.log(state.userPool)
 
 const getters = {
-  /*getUsername: (state) => {
-    return state.username
+  getUserId: (state) => {
+    return state.userId
   }
-  getUserAttributes: (state) => {
-    return state.userAttributes
-  }*/
 }
 
 const mutations = {
