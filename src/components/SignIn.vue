@@ -42,3 +42,8 @@
     }
   }
 </script>
+<style lang="scss" scoped>
+  main {
+    background: #9847ff;
+  }
+</style>

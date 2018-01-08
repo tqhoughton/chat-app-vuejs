@@ -1,11 +1,13 @@
 <template>
-  <main>
+  <div>
     <app-header></app-header>
-    <ul v-if="sortedChats.length">
-      <app-chat-link v-for="chat in sortedChats" :key="chat.chatId" :chat="chat"></app-chat-link>
-    </ul>
-    <p v-else>Looks like you don't have any chats.<br>Find some users <router-link :to="{name: 'Users'}">here!</router-link></p>
-  </main>
+    <main>
+      <ul v-if="sortedChats.length">
+        <app-chat-link v-for="chat in sortedChats" :key="chat.chatId" :chat="chat"></app-chat-link>
+      </ul>
+      <p v-else>Looks like you don't have any chats.<br>Find some users <router-link :to="{name: 'Users'}">here!</router-link></p>
+    </main>
+  </div>
 </template>
 <script>
   import Header from './Header.vue'
@@ -48,4 +50,5 @@
   .invite {
     margin-bottom: 2em;
   }
+  
 </style>

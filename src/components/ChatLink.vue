@@ -26,11 +26,11 @@
     background: white;
     padding: .5em;
     margin: 0;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid #4a4a4a;
     box-sizing: border-box;
     
     &:first-child {
-      border-top: 1px solid black;
+      border-top: 1px solid #4a4a4a;
     }
     
     .profile-pic {
@@ -48,6 +48,6 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    
+    color: #4a4a4a;
   }
 </style>

@@ -4,7 +4,8 @@ const state = {
   chats: null,
   messages: {},
   users: null,
-  invites: []
+  invites: [],
+  updateUserActivity: null
 }
 
 const getters = {
@@ -57,16 +58,37 @@ const mutations = {
   },
   setInvites: (state, users) => {
     state.invites = users
+  },
+  setUpdateUserActivity: (state, interval) => {
+    state.updateUserActivity = interval
   }
 }
 
 const actions = {
+  updateUserActivity: ({commit, dispatch, state}) => {
+    console.log('updating user activity...')
+    return new Promise((resolve, reject) => {
+      dispatch('cognito/getIdToken', null, {root: true}).then((token) => {
+        UserService.methods.updateUserActivity(token).then((res) => {
+          console.log('got result')
+          resolve()
+        }).catch((err) => {
+          console.log('there was an error')
+          reject(err)
+        })
+      }).catch((err) => {
+        reject(err)
+      })
+    })
+  },
   loadUser: ({commit, dispatch, state, rootState}) => {
     return new Promise((resolve, reject) => {
       if (!state.user) {
         console.log('getting token...')
         dispatch('cognito/getIdToken', null, {root: true}).then((token) => {
           console.log('got token')
+          dispatch('updateUserActivity')
+          commit('setUpdateUserActivity', setInterval(() => {dispatch('updateUserActivity')}, 60000))
           UserService.methods.getUser(token).then((res) => {
             commit('setUser', res)
             resolve()
@@ -165,11 +187,12 @@ const actions = {
       })
     })
   },
-  loadOnlineUsers: ({commit, dispatch, state}) => {
+  loadOnlineUsers: ({commit, dispatch, state}, force) => {
     return new Promise((resolve, reject) => {
-      if (!state.users) {
+      if (!state.users || force) {
         dispatch('cognito/getIdToken', null, {root: true}).then((token) => {
           UserService.methods.getUsers(token).then((res) => {
+            console.log('users are: ', res)
             commit('setUsers', res)
             resolve()
           })

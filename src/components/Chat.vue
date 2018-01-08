@@ -1,17 +1,19 @@
 <template>
-  <main>
-    <app-header color="#ffbf00" :routeName="user.username"></app-header>
-    <ul class="messages" v-if="formattedMessages.length">
-      <li :id="index === 0 ? 'first' : ''" class="message" :class="getMessageClass(message.senderId, message.lastMsg)" v-for="(message, index) in formattedMessages">
-        <div class="bubble">
-          {{message.body}}
-        </div>
-      </li>
-    </ul> 
-    <form class="new-message" @submit.prevent="triggerSendMessage()">
-      <input type="text" ref="newMessage" placeholder="type message...">
-    </form>
-  </main>
+  <div>
+    <app-header :routeName="user.username"></app-header>
+    <main>
+      <ul class="messages" v-if="formattedMessages.length">
+        <li :id="index === 0 ? 'first' : ''" class="message" :class="getMessageClass(message.senderId, message.lastMsg)" v-for="(message, index) in formattedMessages">
+          <div class="bubble">
+            {{message.body}}
+          </div>
+        </li>
+      </ul> 
+      <form class="new-message" @submit.prevent="triggerSendMessage()">
+        <input @focus="scrollDown()" type="text" ref="newMessage" placeholder="type message...">
+      </form>
+    </main>
+  </div>
 </template>
 <script>
   import Header from './Header.vue'
@@ -39,6 +41,12 @@
       })
     },
     methods: {
+      scrollDown() {
+        let html = document.querySelector('html')
+        setTimeout(() => {
+          html.scrollTop = html.scrollHeight
+        }, 500)
+      },
       getMessageClass(senderId, lastMsg, first) {
         let classStr
         if (senderId === this.userId) {
@@ -65,7 +73,12 @@
     }
   }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
+  main {
+    min-height: 100vh;
+    background: #dedede;
+    box-sizing: border-box;
+  }
   .messages {
     display: flex;
     flex-direction: column-reverse;
@@ -95,7 +108,7 @@
     }
     
     &.mine.last-msg-type .bubble {
-      border-top-right-radius: .75em;
+      border-top-right-radius: 1em;
     }
     
     &.theirs + .theirs .bubble {
@@ -107,7 +120,7 @@
     }
     
     &.theirs.last-msg-type .bubble {
-      border-top-left-radius: .75em;
+      border-top-left-radius: 1em;
     }
     
     &.mine {
@@ -115,7 +128,7 @@
       
       .bubble {
         color: white;
-        background: black;
+        background: #4a4a4a;
         border-top-right-radius: 0;
       }
       
@@ -126,8 +139,12 @@
     
     .bubble {
       background: white;
-      border-radius: .75em;
+      border-radius: 1em;
       padding: .5em .75em;
+    }
+    
+    &:last-child .bubble {
+      margin-top: 1em;
     }
   }
 </style>

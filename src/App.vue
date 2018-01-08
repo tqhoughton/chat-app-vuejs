@@ -29,7 +29,6 @@ export default {
   }
 }
 </script>
-
 <style lang="scss">
   aside {
     width: 75vw;
@@ -47,7 +46,6 @@ export default {
     color: #cccccc;
     
     h2 {
-      color: white;
       text-align: center;
       font-size: 1.5em;
     }
@@ -101,7 +99,7 @@ export default {
   }
   
   body {
-    background-color: #FFD147;
+    background-color: #cccccc;
     min-height: 100vh;
     font-family: 'Open Sans', sans-serif;
     box-sizing: border-box;
@@ -111,6 +109,7 @@ export default {
   h1, h2 {
     font-weight: normal;
     font-family: 'Patua One', cursive;
+    color: white;
   }
 
   h1 {
@@ -118,6 +117,10 @@ export default {
     text-align: center;
     padding: 40px 0;
     margin: 0
+  }
+  
+  h3 {
+    font-size: 1.5em;
   }
 
   .container {
@@ -129,6 +132,10 @@ export default {
   nav.simple {
     text-align: center;
     margin-top: 2em;
+    color: white;
+    a {
+      color: white;
+    }
   }
   
   a {
@@ -150,7 +157,7 @@ export default {
     font-size: 18px;
     font-weight: 600;
     background: white;
-    border: 1px solid black;
+    border: 1px solid #cccccc;
     
     &.block {
       width: 80%;
@@ -163,6 +170,7 @@ export default {
     &.inverted {
       color: white;
       background: black;
+      border: 1px solid black;
     }
   }
 

@@ -6,19 +6,13 @@
   
   export default {
     methods: {
-//      updateUserActivity(jwt, username) {
-//        Vue.http.headers.common['Authorization'] = jwt
-//        return Vue.http.put(url, null, {params: {username}}, ).then((response) => {
-//          console.log(response)
-//        })
-//      },
-//      getActiveUsers(jwt) {
-//        Vue.http.headers.common['Authorization'] = jwt
-//        return Vue.http.get(url).then((response) => {
-//          console.log('response in service is: ', response)
-//          return response.body.Items
-//        })
-//      },
+      updateUserActivity(token) {
+        Vue.http.headers.common['Authorization'] = token
+        return Vue.http.put(`${url}/user/last-activity`).then((response) => {
+          console.log(response)
+          return response
+        })
+      },
       getUser(token) {
         console.log('token is: ', token)
         Vue.http.headers.common['Authorization'] = token
@@ -66,7 +60,7 @@
         })
       },
       getUsers(token) {
-        console.log(token)
+        console.log('getting users...')
         Vue.http.headers.common['Authorization'] = token
         return Vue.http.get(`${url}/users/online`).then((res) => {
           console.log('response is: ', res.body)

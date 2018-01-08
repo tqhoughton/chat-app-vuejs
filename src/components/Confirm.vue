@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <main>
     <h1>AWS Chat</h1>
     <div class="container">
       <form @submit.prevent="triggerConfirmRegistration">
         <input type="text" placeholder="username" v-model="usernameC">
         <input type="text" placeholder="enter code" v-model="code">
-        <button type="submit">Confirm Code</button>
+        <button class="block" type="submit">Confirm Code</button>
       </form>
       <button @click="triggerResendConfirmation" class="block">Resend Code</button> 
     </div>
@@ -13,7 +13,7 @@
       <router-link to="/signin">Sign In</router-link>
       <router-link to="/signup">Sign Up</router-link>
     </nav>
-  </div>  
+  </main>  
 </template>
 <script>
 import { mapActions } from 'vuex'
@@ -52,12 +52,16 @@ export default {
   }
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
   nav a {
     display: inline-block;
     
     &:not(:last-child) {
       margin-right: 1em;
     }
+  }
+  
+  main {
+    background: #9847ff;
   }
 </style>
