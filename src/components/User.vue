@@ -2,12 +2,12 @@
   <li class="row">
     <img class="profile-pic" src="/static/no-picture.svg" alt="">
     <span :title="user.username">{{user.username}}</span>
-    <button class="inverted inline" @click="action(user.userId)">{{actionName}}</button>
+    <button :disabled="disabled" class="inverted inline" @click="action(user.userId)">{{actionName}}</button>
   </li>
 </template>
 <script>
   export default {
-    props: ['actionName', 'action', 'user']
+    props: ['actionName', 'action', 'user', 'disabled']
   }
 </script>
 <style lang="scss" scoped>

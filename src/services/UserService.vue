@@ -17,6 +17,7 @@
         console.log('token is: ', token)
         Vue.http.headers.common['Authorization'] = token
         return Vue.http.get(`${url}/user`).then((res) => {
+          console.log('res is: ', res.body)
           return res.body
         })
       },
@@ -49,6 +50,7 @@
         }
         Vue.http.headers.common['Authorization'] = token
         return Vue.http.post(`${url}/invites/send`, body).then((res) => {
+          console.log('res is: ', res.body)
           return res.body
         })
       },
@@ -69,9 +71,12 @@
       },
       getInvites(token) {
         Vue.http.headers.common['Authorization'] = token
+        console.log('getting invites...')
         return Vue.http.get(`${url}/user/invites`).then((res) => {
           console.log('invites are: ', res.body)
           return res.body
+        }).catch((err) => {
+          console.error(err)
         })
       }
     }

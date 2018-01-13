@@ -8,7 +8,7 @@
       </form>
       <h3>Online Users</h3>
       <ul class="users">
-        <app-user v-for="user in users" :key="user.userId" :user="user" actionName="Invite" :action="sendInvite"></app-user>
+        <app-user v-for="user in users" :key="user.userId" :user="user" actionName="Invite" :action="sendInvite" :disabled="invitesSent.includes(user.userId) || chatIds.includes(user.userId) || invitesReceived.includes(user.userId)"></app-user>
       </ul>  
     </main>
   </div>
@@ -26,7 +26,10 @@
     },
     computed: {
       ...mapGetters('user', {
-        users: 'getUsers'
+        users: 'getUsers',
+        invitesSent: 'getInvitesSent',
+        chatIds: 'getChatIds',
+        invitesReceived: 'getInviteIds'
       })
     },
     methods: {
@@ -46,6 +49,8 @@
           console.log('done')
         })
       }, 60000)
+      
+      console.log('invites sent: ', this.invitesSent)
     }
   }
 </script>

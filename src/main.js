@@ -4,8 +4,11 @@ import VueResource from 'vue-resource'
 import Router from './routes'
 import App from './App.vue'
 import { store } from './store/store'
+import { sync } from 'vuex-router-sync'
 
 Vue.use(VueResource)
+
+const unsync = sync(store, Router)
 
 Vue.http.interceptors.push((request, next) => {
     console.log(request);

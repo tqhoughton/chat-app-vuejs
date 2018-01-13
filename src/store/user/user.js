@@ -5,6 +5,7 @@ const state = {
   messages: {},
   users: null,
   invites: [],
+  invitesSent: [],
   updateUserActivity: null
 }
 
@@ -12,21 +13,41 @@ const getters = {
   getUser: (state) => {
     return state.user
   },
+  getInvitesSent: (state) => {
+    return state.invitesSent
+  },
   getUserId: (state) => {
     return state.user.userId
   },
   getChats: (state) => {
     return state.chats
   },
+  getChatIds: (state) => {
+    return state.user.chats || []
+  },
   getUsers: (state) => {
     return state.users
   },
   getInvites: (state) => {
     return state.invites
+  },
+  getInviteIds: (state) => {
+    return state.user.invitesReceived || []
   }
 }
 
 const mutations = {
+  setInvitesSent: (state, invites) => {
+    state.invitesSent = invites
+  },
+  addInviteSent: (state, userId) => {
+    state.invitesSent.push(userId)
+    if (state.user.invitesSent) {
+      state.user.invitesSent.push(userId)
+    } else {
+      state.user.invitesSent = [userId]
+    }
+  },
   setUser: (state, user) => {
     state.user = user
   },
@@ -46,21 +67,34 @@ const mutations = {
     if (state.messages[chatId]) {
       state.messages[chatId].unshift(message)
     }
-    state.chats[chatId] = {...state.chats[chatId], lastMessage: message }
+    if (state.chats && state.chats[chatId]) {
+      state.chats[chatId] = {...state.chats[chatId], lastMessage: message }
+    }
   },
   addInvite: (state, invite) => {
     state.invites.push(invite)
-    if (!state.user.invites) state.user.invites = []
-    state.user.invites.push(invite.userId)
+    if (!state.user.invitesReceived) state.user.invitesReceived = []
+    state.user.invitesReceived.push(invite.userId)
   },
   setUsers: (state, users) => {
     state.users = users
   },
   setInvites: (state, users) => {
+    /*state.invites.splice(0, state.invites.length)
+    for (let u of users) {
+      console.log(u)
+      state.invites.push(u)
+    }*/
     state.invites = users
   },
   setUpdateUserActivity: (state, interval) => {
     state.updateUserActivity = interval
+  },
+  removeInvite: (state, userId) => {
+    let pos = state.invites.findIndex((i) => {
+      return i.userId = userId
+    })
+    state.invites.splice(pos, 1)
   }
 }
 
@@ -90,7 +124,12 @@ const actions = {
           dispatch('updateUserActivity')
           commit('setUpdateUserActivity', setInterval(() => {dispatch('updateUserActivity')}, 60000))
           UserService.methods.getUser(token).then((res) => {
+            res.invitesReceived = res.invitesReceived || []
+            res.invitesSent = res.invitesSent || []
             commit('setUser', res)
+            if (res.invitesSent.length) {
+              commit('setInvitesSent', res.invitesSent)
+            }
             resolve()
           }).catch((err) => {
             console.log('error')
@@ -143,10 +182,26 @@ const actions = {
       }
     })
   },
-  addMessage: ({commit, dispatch, state}, message) => {
+  addMessage: ({commit, dispatch, state, rootState}, message) => {
+    function doNotification() {
+      dispatch('addNotification', { to: { name: 'Chat', params: { id: message.chatId }, hash: '#first'}, message: `${state.chats[message.chatId].otherUser.username} sent you a message!`}, {root: true})
+    }
     commit('addMessage', message)
+    if (rootState.route.name !== 'Chat' && rootState.route.params.id !== message.chatId) {
+      if (state.chats && state.chats[message.chatId]) {
+        doNotification()
+      } else {
+        dispatch('loadChats').then(() => {
+          console.log('loaded!')
+          doNotification()
+        })
+      }
+    }
   },
-  addInvite: ({commit, dispatch, state}, invite) => {
+  addInvite: ({commit, dispatch, state, rootState}, invite) => {
+    if (rootState.route.name !== 'Invites') {
+      dispatch('addNotification', { to: { name: 'Invites'}, message: `${invite.username} invited you to chat!`}, {root: true})
+    }
     commit('addInvite', invite)
   },
   sendMessage: ({commit, dispatch, state}, {body, chatId}) => {
@@ -163,6 +218,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       dispatch('cognito/getIdToken', null, {root: true}).then((token) => {
         UserService.methods.sendInvite(username, token, 'username').then((res) => {
+          commit('addInviteSent', res)
           resolve()
         })
       })
@@ -172,6 +228,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       dispatch('cognito/getIdToken', null, {root: true}).then((token) => {
         UserService.methods.sendInvite(userId, token).then((res) => {
+          commit('addInviteSent', res)
           resolve()
         })
       })
@@ -181,6 +238,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       dispatch('cognito/getIdToken', null, {root: true}).then((token) => {
         UserService.methods.acceptInvite(userId, token).then((res) => {
+          commit('removeInvite', userId)
+          dispatch('addNotification', { to: { name: 'Chat', params: {id: res.chatId} }, message: `You can now chat with ${res.otherUser.username}`}, {root: true})
           commit('addChat', res)
           resolve()
         })
@@ -204,10 +263,12 @@ const actions = {
   },
   loadInvites: ({commit, dispatch, state}) => {
     return new Promise((resolve, reject) => {
-      if (state.user.invitesRecieved) {
+      console.log(state.user.invitesReceived)
+      if (state.user.invitesReceived.length) {
         console.log('loading invites')
         dispatch('cognito/getIdToken', null, {root: true}).then((token) => {
           UserService.methods.getInvites(token).then((res) => {
+            if (!res) res = []
             commit('setInvites', res)
             resolve()
           })

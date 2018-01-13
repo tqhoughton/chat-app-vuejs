@@ -27,31 +27,20 @@ const state = {
   userPool: new CognitoUserPool({
     UserPoolId: config.userPoolId,
     ClientId: config.clientId
-  }),
-  userId: null
+  })
 }
 
 console.log(state.userPool)
 
-const getters = {
-  getUserId: (state) => {
-    return state.userId
-  }
-}
+const getters = {}
 
 const mutations = {
   setUserId: (state, payload) => {
     state.userId = payload
-  },
-  setUsername: (state, payload) => {
-    state.username = payload
   }
 }
 
 const actions = {
-  updateUserActivity({commit, state}) { 
-    UserService.methods.updateUserActivity(state.userSession.getIdToken().getJwtToken(), state.username)
-  },
   getIdToken({commit, state}) {
     //console.log('running getIdToken')
     return new Promise((resolve, reject) => {
@@ -99,9 +88,10 @@ const actions = {
       cognitoUser.authenticateUser(authenticationDetails, {
         onSuccess: (session) => {
           console.log('log in successful')
-          dispatch('setUserId').then(() => {
-            resolve(session)
-          })
+//          dispatch('setUserId').then(() => {
+//            resolve(session)
+//          })
+          resolve()
         },
         onFailure: (err) => {
           console.error(err);
@@ -155,7 +145,7 @@ const actions = {
     }
     return user.signOut()
   },
-  setUserId({commit, state}) {
+  /*setUserId({commit, state}) {
     console.log('setting user id...')
     let user = state.userPool.getCurrentUser()
     return new Promise((resolve, reject) => {
@@ -175,7 +165,7 @@ const actions = {
         })
       })
     })
-  }
+  }*/
 }
 
 export default {

@@ -8,14 +8,27 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
   state: {
-    menuClass: ''
+    menuClass: '',
+    notifications: []
   },
   getters: {
     getMenuClass: (state) => {
       return state.menuClass
+    },
+    getNotifications: (state) => {
+      return state.notifications
     }
   },
   mutations: {
+    addNotification: (state, note) => {
+      state.notifications.push(note)
+    },
+    removeNotifications: (state) => {
+      state.notifications.splice(0, state.notifications.length)
+    },
+    removeNotification: (state, i) => {
+      state.notifications.splice(i, 1)
+    },
     toggleMenuClass: (state) => {
       let cssClass = ''
       switch (state.menuClass) {
@@ -40,8 +53,17 @@ export const store = new Vuex.Store({
     toggleMenuClass: ({commit}) => {
       commit('toggleMenuClass')
     },
+    addNotification: ({commit}, note) => {
+      commit('addNotification', note)
+    },
     resetMenuClass: ({commit}) => {
       commit('resetMenuClass')
+    },
+    removeNotifications: ({commit}) => {
+      commit('removeNotifications')
+    },
+    removeNotification: ({commit}, i) => {
+      commit('removeNotification', i)
     }
   },
   modules: {

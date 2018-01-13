@@ -55,6 +55,7 @@ const actions = {
     })
     state.client.on('message', (topic, jsonMessage) => {
       const message = JSON.parse(jsonMessage)
+      console.log(jsonMessage)
       const payload = message.payload
       const type = message.type
       if (type === 'invite') {

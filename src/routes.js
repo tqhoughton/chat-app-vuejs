@@ -43,6 +43,7 @@ function loadUsers(to, from, next) {
 }
 
 function loadInvites(to, from, next) {
+  console.log('dispatching loadInvites event')
   store.dispatch('user/loadInvites').then(() => {
     next()
   })

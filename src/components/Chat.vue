@@ -75,7 +75,7 @@
 </script>
 <style lang="scss" scoped>
   main {
-    min-height: 100vh;
+    height: 100%;
     background: #dedede;
     box-sizing: border-box;
   }

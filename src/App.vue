@@ -171,6 +171,11 @@ export default {
       color: white;
       background: black;
       border: 1px solid black;
+      
+      &[disabled] {
+        background: #cccccc;
+        border: 1px solid #cccccc;
+      }
     }
   }
 
