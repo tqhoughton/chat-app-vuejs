@@ -28,6 +28,7 @@
     margin: 0;
     border-bottom: 1px solid #4a4a4a;
     box-sizing: border-box;
+    cursor: pointer;
     
     &:first-child {
       border-top: 1px solid #4a4a4a;

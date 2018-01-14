@@ -1,5 +1,5 @@
 <template>
-  <div id="view" :class="menuClass">
+  <div id="view" :class="menuClass" v-touch:swipe.left="closeMenu" v-touch:swipe.right="openMenu">
     <div id="app-menu-container">
       <aside>
         <nav id="side-menu">
@@ -8,6 +8,7 @@
             <router-link @click="restMenuClass()" tag="li" :to="{name: 'Chats'}">My Chats</router-link>
             <router-link tag="li" :to="{name: 'Users'}">Users</router-link>
             <router-link tag="li" :to="{name: 'Invites'}">Invites</router-link>
+            <router-link tag="li" :to="{name: 'Settings'}">Settings</router-link>
             <router-link tag="li" to="/signout">Sign Out</router-link>
           </ul>
         </nav>
@@ -25,6 +26,19 @@ export default {
   computed: {
     ...mapGetters({
       menuClass: 'getMenuClass'
+    })
+  },
+  methods: {
+    closeMenu() {
+      console.log('closing menu...')
+      this.setMenuClass('menu-closed')
+    },
+    openMenu() {
+      this.setMenuClass('menu-open')
+    },
+    ...mapActions({
+      toggleMenuClass: 'toggleMenuClass',
+      setMenuClass: 'setMenuClass'
     })
   }
 }
@@ -57,6 +71,7 @@ export default {
     li {
       display: block;
       margin-bottom: .25em;
+      cursor: pointer;
       
       &.router-link-active {
         color: white;

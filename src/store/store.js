@@ -30,6 +30,7 @@ export const store = new Vuex.Store({
       state.notifications.splice(i, 1)
     },
     toggleMenuClass: (state) => {
+      console.log('toggling...')
       let cssClass = ''
       switch (state.menuClass) {
         case 'menu-open':
@@ -44,12 +45,18 @@ export const store = new Vuex.Store({
       }
       state.menuClass = cssClass
     },
+    setMenuClass: (state, value) => {
+      state.menuClass = value
+    },
     resetMenuClass: (state) => {
       state.menuClass = ''
     }
   },
   
   actions: {
+    setMenuClass: ({commit}, value) => {
+      commit('setMenuClass', value)
+    },
     toggleMenuClass: ({commit}) => {
       commit('toggleMenuClass')
     },

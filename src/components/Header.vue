@@ -1,5 +1,5 @@
 <template>
-  <header :style="color ? 'background-color: ' + color : ''">
+  <header>
     <i class="fa fa-bars"
        aria-hidden="true"
        @click="toggleMenuClass()"></i>
@@ -18,9 +18,6 @@
         </li>
       </ul>
     </div>
-    <audio ref="audio">
-      <source src="/static/notification.mp3" type="audio/mpeg">
-    </audio>
   </header>
 </template>
 <script>
@@ -30,7 +27,6 @@
     data() {
       return {
         showNotifications: false,
-        nLength: 0
       }
     },
     computed: {
@@ -41,11 +37,6 @@
     watch: {
       notifications: function(newVal) {
         console.log('change!')
-        console.log(this.nLength)
-        if (this.nLength < newVal.length) {
-          this.$refs.audio.play()
-          this.nLength = newVal.length
-        }
         if (newVal.length) {
           document.title = `(${newVal.length}) AWS Chat`
         } else {
@@ -74,8 +65,6 @@
       let notifications = ''
       if (this.notifications.length) notifications = `(${notifications.length}) `
       document.title = `${notifications} AWS Chat`
-      
-      this.notificationLength = this.notifications.length
     }
   }
 </script>
@@ -103,6 +92,7 @@
         
         div.message {
           padding: .5em;
+          cursor: pointer;
         }
         
         div.close-btn {
@@ -137,6 +127,9 @@
   }
   .fa-bell-o, .fa-bell {
     font-size: 2em;
+  }
+  .fa-bell {
+    cursor: pointer;
   }
   h2 {
     font-size: 2.5em;

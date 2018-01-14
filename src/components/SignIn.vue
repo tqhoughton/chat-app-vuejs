@@ -7,8 +7,12 @@
       <button type="submit" class="block">Sign In</button>
     </form>
     <nav class="simple">
-      <span>Not registered?</span>
-      <router-link to="/signup">Sign Up</router-link>
+      <div>
+        <router-link to="/signup">Sign Up</router-link>
+      </div>
+      <div>
+        <router-link :to="{name: 'ForgotPassword'}">Forgot Password?</router-link>
+      </div>
     </nav>
   </main>
 </template>
@@ -45,5 +49,8 @@
 <style lang="scss" scoped>
   main {
     background: #9847ff;
+  }
+  nav div {
+    margin-bottom: .5em;
   }
 </style>

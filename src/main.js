@@ -5,6 +5,9 @@ import Router from './routes'
 import App from './App.vue'
 import { store } from './store/store'
 import { sync } from 'vuex-router-sync'
+import Vue2TouchEvents from 'vue2-touch-events'
+ 
+Vue.use(Vue2TouchEvents)
 
 Vue.use(VueResource)
 

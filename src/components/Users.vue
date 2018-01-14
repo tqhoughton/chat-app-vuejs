@@ -7,9 +7,12 @@
         <button class="inverted input-inline" type="submit">Invite</button>
       </form>
       <h3>Online Users</h3>
-      <ul class="users">
+      <ul v-if="users.length" class="users">
         <app-user v-for="user in users" :key="user.userId" :user="user" actionName="Invite" :action="sendInvite" :disabled="invitesSent.includes(user.userId) || chatIds.includes(user.userId) || invitesReceived.includes(user.userId)"></app-user>
-      </ul>  
+      </ul>
+      <p v-else class="error">
+        Looks like there are no users online right now. Check again later!
+      </p>  
     </main>
   </div>
 </template>
@@ -74,6 +77,12 @@
     min-height: 100vh;
     background: #cccccc;
     box-sizing: border-box;
+  }
+  
+  p.error {
+    text-align: center;
+    padding-left: 10%;
+    padding-right: 10%;
   }
   
 </style>

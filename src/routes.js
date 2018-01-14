@@ -9,6 +9,9 @@ import Chat from './components/Chat.vue'
 import Chats from './components/Chats.vue'
 import Users from './components/Users.vue'
 import Invites from './components/Invites.vue'
+import Settings from './components/Settings.vue'
+import ForgotPassword from './components/ForgotPassword.vue'
+
 import { store } from './store/store'
 
 Vue.use(Router);
@@ -88,6 +91,11 @@ export default new Router({
       })
     },
     {
+      path: "/forgot",
+      name: "ForgotPassword",
+      component: ForgotPassword
+    },
+    {
       path: "/chats",
       beforeEnter: loadChats,
       component: Dashboard,
@@ -113,6 +121,14 @@ export default new Router({
           }
         }
       ]
+    },
+    {
+      path: "/settings",
+      name: "Settings",
+      component: Settings,
+      meta: {
+        loadUser: true
+      }
     },
     {
       path: "/users",

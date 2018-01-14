@@ -41,10 +41,32 @@ const mutations = {
 }
 
 const actions = {
+  changePassword({commit, state}, {oldPass, newPass}) {
+    console.log('changing password...')
+    return new Promise((resolve, reject) => {
+      let user = state.userPool.getCurrentUser()
+      console.log(user)
+      if (!user) {
+        reject(new Error('user is not logged in'))
+      }
+      user.getSession((err, session) => {
+        console.log('got session')
+        user.changePassword(oldPass, newPass, (err, result) => {
+          if (err) {
+            console.error(err)
+            reject(err)
+          } else {
+            console.log('success!')
+            resolve(result)
+          }
+        })
+      })
+    })
+  },
   getIdToken({commit, state}) {
     //console.log('running getIdToken')
     return new Promise((resolve, reject) => {
-      let user = state.userPool.getCurrentUser();
+      let user = state.userPool.getCurrentUser()
       if (user) {
         user.getSession((err, session) => {
           if (err) return reject(err)
