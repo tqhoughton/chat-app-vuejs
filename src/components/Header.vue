@@ -68,7 +68,7 @@
     }
   }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
   .notifications {
     position: relative;
     
@@ -151,9 +151,5 @@
     z-index: 100;
     background-color: #9847ff;
     box-shadow: 0px 1px 8px 1px #4a4a4a;
-    
-    &+ main {
-      padding-top: 82px;
-    }
   }
 </style>

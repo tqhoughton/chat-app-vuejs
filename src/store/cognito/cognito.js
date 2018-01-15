@@ -41,6 +41,45 @@ const mutations = {
 }
 
 const actions = {
+  confirmPassword({commit, state}, {code, pass, username}) {
+    return new Promise((resolve, reject) => {
+      //let user = state.userPool.getCurrentUser()
+      let userData = {
+        Username: username,
+        Pool: state.userPool
+      }
+      console.log(code, pass)
+      console.log(userData)
+      let user = new CognitoUser(userData)
+      user.confirmPassword(code, pass, {
+        onSuccess: (data) => {
+          console.log(data)
+          resolve(data)
+        },
+        onFailure: (err) => {
+          reject(err)
+        }
+      })
+    })
+  },
+  forgotPassword({commit, state}, username) {
+    return new Promise((resolve, reject) => {
+      let userData = {
+        Username: username,
+        Pool: state.userPool
+      }
+      let user = new CognitoUser(userData)
+      user.forgotPassword({
+        onSuccess: (data) => {
+          console.log(data)
+          resolve(data)
+        },
+        onFailure: (err) => {
+          reject(err)
+        }
+      })
+    })
+  },
   changePassword({commit, state}, {oldPass, newPass}) {
     console.log('changing password...')
     return new Promise((resolve, reject) => {

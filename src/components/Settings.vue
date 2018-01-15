@@ -11,27 +11,31 @@
         <button type="submit">Update Password</button>
       </form>
       <span class="message" v-if="response">{{response}}</span>
-      <button class="warning">
+      <button class="warning" @click="confirmDelete = true">
         Delete Account
       </button>
     </main>
+    <app-modal v-if="confirmDelete" :action="triggerDeleteAccount" :onCancel="closeModal" actionName="Delete" title="Delete Account" text="Are you sure you want to delete your account? This action cannot be undone."></app-modal>
   </div>
 </template>
 <script>
   import Header from './Header.vue'
+  import Modal from './Modal.vue'
   import { mapActions } from 'vuex'
   
   export default {
     data() {
       return {
         showPasswordForm: false,
+        confirmDelete: false,
         response: '',
         oldPass: '',
         newPass: ''
       }
     },
     components: {
-      appHeader: Header
+      appHeader: Header,
+      appModal: Modal
     },
     methods: {
       triggerUpdatePassword() {
@@ -46,6 +50,13 @@
         }).catch((err) => {
           this.response = err.message
         })
+      },
+      triggerDeleteAccount() {
+        this.confirmDelete = false
+        console.log('deleting...')
+      },
+      closeModal() {
+        this.confirmDelete = false
       },
       ...mapActions('cognito', {
         changePassword: 'changePassword'

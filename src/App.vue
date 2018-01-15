@@ -44,6 +44,10 @@ export default {
 }
 </script>
 <style lang="scss">
+  header + main {
+    padding-top: 82px;
+  }
+  
   aside {
     width: 75vw;
     background-color: #4a4a4a;
