@@ -7,7 +7,7 @@
         <button class="inverted input-inline" type="submit">Invite</button>
       </form>
       <h3>Online Users</h3>
-      <ul v-if="users.length" class="users">
+      <ul v-if="Object.keys(users).length" class="users">
         <app-user v-for="user in users" :key="user.userId" :user="user" actionName="Invite" :action="sendInvite" :disabled="invitesSent.includes(user.userId) || chatIds.includes(user.userId) || invitesReceived.includes(user.userId)"></app-user>
       </ul>
       <p v-else class="error">
@@ -46,14 +46,20 @@
       appHeader: Header,
       appUser: User
     },
-    created() {
-      this.interval = setInterval(() => {
-        this.loadOnlineUsers(true).then(() => {
-          console.log('done')
+    beforeRouteEnter(to, from, next) {
+      next((vm) => {
+        vm.interval = setInterval(() => {
+          vm.loadOnlineUsers(true).then(() => {
+            console.log('done')
+          })
+        }, 60000)
+
+        console.log('invites sent: ', vm.invitesSent)
         })
-      }, 60000)
-      
-      console.log('invites sent: ', this.invitesSent)
+    },
+    beforeRouteLeave(to, from, next) {
+      clearInterval(this.interval)
+      next()
     }
   }
 </script>

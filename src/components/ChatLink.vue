@@ -12,14 +12,35 @@
         Click to send a message
       </div>
     </div>
+    <i @click.prevent="showDelete = !showDelete" class="fa fa-cog" aria-hidden="true"></i>
+    <i @click.prevent="action(chat.chatId)" v-if="showDelete" class="fa fa-trash-o" aria-hidden="true"></i>
   </router-link>
 </template>
 <script>
   export default {
-    props: ['chat']
+    props: ['chat', 'index', 'action'],
+    data() {
+      return {
+        showDelete: false
+      }
+    }
   }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
+  i {
+    font-size: 1.5em;
+    position: absolute;
+    right: .5em;
+    
+    &.fa-cog {
+      top: .5em;
+    }
+    
+    &.fa-trash-o {
+      bottom: .5em;
+    }
+  }
+  
   .chat-link {
     display: flex;
     align-items: center;
@@ -29,6 +50,8 @@
     border-bottom: 1px solid #4a4a4a;
     box-sizing: border-box;
     cursor: pointer;
+    position: relative;
+    user-select: none;
     
     &:first-child {
       border-top: 1px solid #4a4a4a;
