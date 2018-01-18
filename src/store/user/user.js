@@ -95,10 +95,32 @@ const mutations = {
       return i.userId = userId
     })
     state.invites.splice(pos, 1)
+  },
+  deleteChat: (state, chatId) => {
+    let temp = {...state.chats}
+    delete temp[chatId]
+    state.chats = temp
+    state.user.chats.splice(state.user.chats.findIndex((x) => {
+      return x === chatId
+    }), 1)
   }
 }
 
 const actions = {
+  deleteChat: ({commit, dispatch, state}, chatId) => {
+    return new Promise((resolve, reject) => {
+      dispatch('cognito/getIdToken', null, {root: true}).then((token) => {
+        UserService.methods.deleteChat(token, chatId).then((res) => {
+          commit('deleteChat', chatId)
+          resolve()
+        }).catch((err) => {
+          reject(err)
+        })
+      }).catch((err) => {
+        reject(err)
+      })
+    })
+  },
   updateUserActivity: ({commit, dispatch, state}) => {
     console.log('updating user activity...')
     return new Promise((resolve, reject) => {

@@ -16,7 +16,7 @@
   import ChatLink from './ChatLink.vue'
   import Modal from './Modal.vue'
   
-  import { mapGetters } from 'vuex'
+  import { mapGetters, mapActions } from 'vuex'
   export default {
     data() {
       return {
@@ -53,11 +53,17 @@
       triggerDeleteChat() {
         console.log(this.currentId)
         this.showDeleteModal = false
+        this.deleteChat(this.currentId).then((res) => {
+          console.log('deleted')
+        })
       },
       updateModal(id) {
         this.showDeleteModal = true
         this.currentId = id
-      }
+      },
+      ...mapActions('user', {
+        deleteChat: 'deleteChat'
+      })
     },
     components: {
       appHeader: Header,

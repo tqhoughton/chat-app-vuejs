@@ -6,6 +6,13 @@
   
   export default {
     methods: {
+      deleteChat(token, chatId) {
+        Vue.http.headers.common['Authorization'] = token
+        return Vue.http.delete(`${url}/user/chats/${chatId}`).then((response) => {
+          console.log(response)
+          return response
+        })
+      },
       updateUserActivity(token) {
         Vue.http.headers.common['Authorization'] = token
         return Vue.http.put(`${url}/user/last-activity`).then((response) => {
