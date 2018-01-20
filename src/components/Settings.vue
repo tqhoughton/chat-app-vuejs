@@ -2,18 +2,21 @@
   <div>
     <app-header></app-header>
     <main>
-      <img src="/static/no-picture.svg">
-      <button>Change Picture</button>
-      <button @click="showPasswordForm = !showPasswordForm">Change Password</button>
-      <form v-if="showPasswordForm" @submit.prevent="triggerUpdatePassword()">
-        <input type="password" placeholder="old password" v-model="oldPass">
-        <input type="password" placeholder="new password" v-model="newPass">
-        <button type="submit">Update Password</button>
-      </form>
-      <span class="message" v-if="response">{{response}}</span>
-      <button class="warning" @click="confirmDelete = true">
-        Delete Account
-      </button>
+      <div class="container padded">
+        <img src="/static/no-picture.svg">
+        <button disabled>Change Picture</button>
+        <button @click="showPasswordForm = !showPasswordForm">Change Password</button>
+        <form v-if="showPasswordForm" @submit.prevent="triggerUpdatePassword()">
+          <input type="password" placeholder="old password" v-model="oldPass">
+          <input type="password" placeholder="new password" v-model="newPass">
+          <button type="submit">Update Password</button>
+        </form>
+        <span class="message" v-if="response">{{response}}</span>
+        <router-link tag="button" :to="{name: 'SignOut'}">Sign Out</router-link>
+        <button class="warning" @click="confirmDelete = true">
+          Delete Account
+        </button>
+      </div>
     </main>
     <app-modal v-if="confirmDelete" :action="triggerDeleteAccount" :onCancel="closeModal" actionName="Delete" title="Delete Account" text="Are you sure you want to delete your account? This action cannot be undone."></app-modal>
   </div>
@@ -53,13 +56,18 @@
       },
       triggerDeleteAccount() {
         this.confirmDelete = false
-        console.log('deleting...')
+        this.deleteUser().then(() => {
+          this.$router.push({name: 'SignOut'})
+        })
       },
       closeModal() {
         this.confirmDelete = false
       },
       ...mapActions('cognito', {
-        changePassword: 'changePassword'
+        changePassword: 'changePassword',
+      }),
+      ...mapActions('user', {
+        deleteUser: 'deleteUser'
       })
     }
   }
@@ -69,10 +77,12 @@
     background-color: #dedede;
     height: 100%;
     box-sizing: border-box;
+  }
+  
+  .container {
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    padding-left: 10%;
-    padding-right: 10%;
   }
   
   button {

@@ -48,6 +48,8 @@
     padding: .5em;
     margin: 0;
     border-bottom: 1px solid #4a4a4a;
+    border-left: 1px solid #4a4a4a;
+    border-right: 1px solid #4a4a4a;
     box-sizing: border-box;
     cursor: pointer;
     position: relative;
@@ -73,5 +75,12 @@
     overflow: hidden;
     text-overflow: ellipsis;
     color: #4a4a4a;
+  }
+  
+  @media (min-width: 500px) {
+    .chat-link {
+      font-size: 1.25em;
+      padding: .75em;
+    }
   }
 </style>

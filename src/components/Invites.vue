@@ -1,7 +1,8 @@
 <template>
   <div>
     <app-header></app-header>
-    <main>
+    <main class="container">
+      <h3>Invites</h3>
       <ul class="invites" v-if="invites.length">
         <app-user v-for="invite in invites" :key="invite.userId" :user="invite" :action="acceptInvite" actionName="Accept"></app-user>
       </ul>
@@ -31,8 +32,18 @@
   }
 </script>
 <style lang="scss" scoped>
+  main h3 {
+    display: none;
+  }
   p.center {
     padding-top: 2em;
     text-align: center;
+  }
+  
+  @media (min-width: 500px) {
+    main h3 {
+      display: block;
+      text-align: center;
+    }
   }
 </style>

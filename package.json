@@ -14,7 +14,8 @@
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
     "vue2-touch-events": "^1.0.0",
-    "vuex-router-sync": "^5.0.0"
+    "vuex-router-sync": "^5.0.0",
+    "webpack-clear-console": "^1.0.3"
   },
   "devDependencies": {
     "amazon-cognito-identity-js": "^1.28.0",

@@ -1,8 +1,8 @@
 <template>
   <div>
     <app-header></app-header>
-    <main>
-      <form class="invite container" @submit.prevent="sendInviteByUsername(username)">
+    <main class="container">
+      <form class="invite padded" @submit.prevent="sendInviteByUsername(username)">
         <input type="text" v-model="username" placeholder="username">
         <button class="inverted input-inline" type="submit">Invite</button>
       </form>

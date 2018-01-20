@@ -20,6 +20,12 @@
           return response
         })
       },
+      deleteUser(token) {
+        Vue.http.headers.common['Authorization'] = token
+        return Vue.http.delete(`${url}/user`).then((res) => {
+          return res.body
+        })
+      },
       getUser(token) {
         console.log('token is: ', token)
         Vue.http.headers.common['Authorization'] = token

@@ -1,7 +1,8 @@
 <template>
   <div>
     <app-header></app-header>
-    <main>
+    <main class="container">
+      <h3>Chats</h3>
       <ul v-if="sortedChats.length">
         <app-chat-link v-for="(chat, i) in sortedChats" :key="chat.chatId" :chat="chat" :index="i" :action="updateModal"></app-chat-link>
       </ul>
@@ -78,6 +79,17 @@
   }
   .invite {
     margin-bottom: 2em;
+  }
+  
+  main h3 {
+    display: none;
+  }
+  
+  @media (min-width: 500px) {
+    main h3 {
+      display: block;
+      text-align: center;
+    }
   }
   
 </style>

@@ -37,6 +37,15 @@ const getters = {
 }
 
 const mutations = {
+  resetState: (state) => {
+    state.user = null,
+    state.chats = null,
+    state.messages = {},
+    state.users = null,
+    state.invites = [],
+    state.invitesSent = [],
+    state.updateUserActivity = null
+  },
   setInvitesSent: (state, invites) => {
     state.invitesSent = invites
   },
@@ -107,6 +116,21 @@ const mutations = {
 }
 
 const actions = {
+  end({commit, dispatch, state})  {
+    clearInterval(state.updateUserActivity)
+    commit('resetState')
+  },
+  deleteUser: ({commit, dispatch, state}) => {
+    return new Promise((resolve, reject) => {
+      dispatch('cognito/getIdToken', null, {root: true}).then((token) => {
+        UserService.methods.deleteUser(token).then((res) => {
+          resolve()
+        }).catch((err) => {
+          reject(err)
+        })
+      })
+    })
+  },
   deleteChat: ({commit, dispatch, state}, chatId) => {
     return new Promise((resolve, reject) => {
       dispatch('cognito/getIdToken', null, {root: true}).then((token) => {
@@ -187,7 +211,19 @@ const actions = {
       }
     })
   },
-  addChat: ({commit, dispatch, state}, chat) => {
+  addChat: ({commit, dispatch, state, rootState}, chat) => {
+    if (rootState.route.name !== 'Chats') {
+      const notification = {
+        to: {
+          name: 'Chat',
+          params: {
+            id: chat.chatId
+          },
+        },
+        message: `${chat.otherUser.username} accepted your invite! Click here to chat with them!`
+      }
+      dispatch('addNotification', notification, {root: true})
+    }
     commit('addChat', chat)
   },
   loadMessages: ({commit, dispatch, state}, chatId) => {

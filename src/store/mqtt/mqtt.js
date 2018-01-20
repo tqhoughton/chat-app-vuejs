@@ -29,6 +29,10 @@ const mutations = {
 }
 
 const actions = {
+  end({commit, dispatch, state}) {
+    state.client.end()
+    state.client = null
+  },
   startClient({commit, dispatch, state, rootState}) {
     let userId = rootState.user.user.userId
     console.log('userId is: ', userId)

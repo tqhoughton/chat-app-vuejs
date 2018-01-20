@@ -2,15 +2,17 @@
   <div>
     <app-header :routeName="user.username"></app-header>
     <main>
-      <ul class="messages" v-if="formattedMessages.length">
-        <li :id="index === 0 ? 'first' : ''" class="message" :class="getMessageClass(message.senderId, message.lastMsg)" v-for="(message, index) in formattedMessages">
-          <div class="bubble">
-            {{message.body}}
-          </div>
-        </li>
-      </ul> 
+      <div class="view" ref="desktopView">
+        <ul class="messages" v-if="formattedMessages.length">
+          <li :id="index === 0 ? 'first' : ''" class="message" :class="getMessageClass(message.senderId, message.lastMsg)" v-for="(message, index) in formattedMessages">
+            <div class="bubble">
+              {{message.body}}
+            </div>
+          </li>
+        </ul> 
+      </div>
       <form class="new-message" @submit.prevent="triggerSendMessage()">
-        <input @focus="scrollDown()" type="text" ref="newMessage" placeholder="type message...">
+        <input @focus="scrollDown()" type="text" ref="newMessage" placeholder="type message..."><button type="submit">Send</button>
       </form>
     </main>
   </div>
@@ -68,6 +70,12 @@
         sendMessage: 'sendMessage'
       })
     },
+    beforeRouteEnter(to, from, next) {
+      next((vm) => {
+        console.log('running')
+        vm.$refs.desktopView.scrollTop = vm.$refs.desktopView.scrollHeight;
+      })
+    },
     components: {
       appHeader: Header
     }
@@ -89,9 +97,17 @@
     position: fixed;
     bottom: 0;
     width: 100%;
+    display: flex;
     
     input {
       margin-bottom: 0;
+    }
+    
+    button {
+      display: block;
+      background: black;
+      border: none;
+      color: white;
     }
   }
   
@@ -145,6 +161,34 @@
     
     &:last-child .bubble {
       margin-top: 1em;
+    }
+  }
+  
+  @media(min-width: 500px) {
+    ul.messages {
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+      font-size: 1.125em;
+    }
+    
+    .view {
+      height: 70vh;
+      overflow-y: scroll;
+      
+      &::-webkit-scrollbar {
+        width: 0px;  /* remove scrollbar space */
+        background: transparent;  /* optional: just make scrollbar invisible */
+      }
+    }
+    
+    .new-message {
+      position: static;
+      margin-left: auto;
+      margin-right: auto;
+      max-width: 500px;
+      margin-bottom: 2em;
+      width: 80%;
     }
   }
 </style>

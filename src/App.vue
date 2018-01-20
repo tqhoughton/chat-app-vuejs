@@ -142,10 +142,16 @@ export default {
     font-size: 1.5em;
   }
 
-  .container {
+  .padded {
+    margin-left: 10%;
+    margin-right: 10%;
     width: 80%;
+  }
+  
+  .container {
     margin-left: auto;
     margin-right: auto;
+    max-width: 425px;
   }
   
   nav.simple {
@@ -207,5 +213,24 @@ export default {
   li {
     display: inline-block;
     margin: 0 10px;
+  }
+  
+  @media(min-width: 500px) {
+    header + main {
+      padding-top: 64px;
+    }
+    
+    #view {
+      &.menu-open #app-menu-container {
+        position: relative;
+        right: 75%;
+        animation: none;
+      }
+      &.menu-closed #app-menu-container {
+        position: relative;
+        right: 75%;
+        animation: none;
+      }
+    }
   }
 </style>

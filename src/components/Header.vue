@@ -1,5 +1,13 @@
 <template>
   <header>
+    <nav>
+      <ul>
+        <router-link tag="li" :to="{name: 'Chats'}">Chats</router-link>
+        <router-link tag="li" :to="{name: 'Invites'}">Invites</router-link>
+        <router-link tag="li" :to="{name: 'Users'}">Users</router-link>
+        <router-link tag="li" :to="{name: 'Settings'}">Settings</router-link>
+      </ul>
+    </nav>
     <i class="fa fa-bars"
        aria-hidden="true"
        @click="toggleMenuClass()"></i>
@@ -69,6 +77,9 @@
   }
 </script>
 <style lang="scss" scoped>
+  nav {
+    display: none;
+  }
   .notifications {
     position: relative;
     
@@ -151,5 +162,39 @@
     z-index: 100;
     background-color: #9847ff;
     box-shadow: 0px 1px 8px 1px #4a4a4a;
+  }
+  
+  @media (min-width: 500px) {
+    .fa-bars, h2 {
+      display: none;
+    }
+    
+    nav {
+      display: block;
+      ul {
+        font-size: 1.25em;
+        
+        li {
+          cursor: pointer;
+          
+          &.router-link-active {
+            font-weight: 600;
+            cursor: default;
+          }
+        }
+      }
+      
+      .fa-sign-out {
+        font-size: 1.25em;
+      }
+    }
+    
+    .notifications {
+      margin-left: auto;
+      
+      ul {
+        top: 64px;
+      }
+    }
   }
 </style>

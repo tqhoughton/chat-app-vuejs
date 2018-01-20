@@ -28,14 +28,18 @@
     bottom: 0;
     right: 0;
     z-index: 200;
+    padding: 1.5em;
+    box-sizing: border-box;
   }
   
   .modal {
     background: white;
     padding: 0;
     border-radius: 1em;
-    margin: 1.5em;
     overflow: hidden;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
   }
   
   header {

@@ -27,6 +27,8 @@
     margin: 0;
     background: white;
     border-bottom: 1px solid black;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
     align-items: center;
     
     &:first-child {
@@ -50,6 +52,12 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+  }
+  
+  @media (min-width: 500px) {
+    .row {
+      font-size: 1.25em;
     }
   }
 </style>

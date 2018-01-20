@@ -11,6 +11,7 @@ import Users from './components/Users.vue'
 import Invites from './components/Invites.vue'
 import Settings from './components/Settings.vue'
 import ForgotPassword from './components/ForgotPassword.vue'
+import About from './components/About.vue'
 
 import { store } from './store/store'
 
@@ -25,6 +26,8 @@ function loadChats(to, from, next) {
 }
 
 function signOut(to, from, next) {
+  store.dispatch('user/end')
+  store.dispatch('mqtt/end')
   store.dispatch('cognito/signOut').then(() => {
     next({
       path: '/signin'
@@ -147,6 +150,11 @@ export default new Router({
       meta: {
         loadUser: true
       }
+    },
+    {
+      path: "/about",
+      name: "About",
+      component: About
     },
     {
       path: '*',
