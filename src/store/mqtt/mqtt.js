@@ -1,3 +1,5 @@
+import UserService from '../../services/UserService.vue'
+
 import AWS from 'aws-sdk/global'
 import AWSMqtt from 'aws-mqtt'
 import { AWS_REGION, IOT_ENDPOINT, IOT_CHANNEL, IDENTITY_POOL_ID } from '../../globals/resources'
@@ -13,15 +15,19 @@ AWS.config.credentials = new AWS.CognitoIdentityCredentials({
 })
 
 const state = {
-  client: null
+  client: null,
+  groupChat: []
 }
 
 const getters = {
+  getGroupChat: (state) => {
+    return state.groupChat
+  }
 }
 
 const mutations = {
-  startClient: (state, { userId, chatIds }) => {
-    
+  addMessage: (state, message) => {
+    state.groupChat.unshift(message)
   },
   endClient: (state) => {
     state.client.end()
@@ -32,6 +38,17 @@ const actions = {
   end({commit, dispatch, state}) {
     state.client.end()
     state.client = null
+  },
+  sendGroupMessage({commit, dispatch, state}, message) {
+    return new Promise((resolve, reject) => {
+      dispatch('cognito/getIdToken', null, {root: true}).then((token) => {
+        UserService.methods.sendGroupMessage(token, message).then((res) => {
+          resolve()
+        }).catch((err) => {
+          reject(err)
+        })
+      })
+    })
   },
   startClient({commit, dispatch, state, rootState}) {
     let userId = rootState.user.user.userId
@@ -56,13 +73,16 @@ const actions = {
     
     state.client.on('connect', () => {
       state.client.subscribe(`${IOT_CHANNEL}/user/${userId}`)
+      state.client.subscribe(`${IOT_CHANNEL}/group`)
     })
     state.client.on('message', (topic, jsonMessage) => {
       const message = JSON.parse(jsonMessage)
       console.log(jsonMessage)
       const payload = message.payload
       const type = message.type
-      if (type === 'invite') {
+      if (topic === `${IOT_CHANNEL}/group`) {
+        commit('addMessage', message)
+      } else if (type === 'invite') {
         dispatch('user/addInvite', payload, { root: true })
       } else if (type === 'chat') {
         dispatch('user/addChat', payload, { root: true })

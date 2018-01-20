@@ -1,7 +1,7 @@
 <template>
   <main>
     <h1>AWS Chat</h1>
-    <form class="container" @submit.prevent="triggerSignIn">
+    <form class="container padded" @submit.prevent="triggerSignIn">
       <input type="text" placeholder="username" v-model="usernameC">
       <input type="password" placeholder="password" v-model="pass">
       <button type="submit" class="block">Sign In</button>
@@ -30,7 +30,7 @@
       triggerSignIn() {
         this.signIn({username: this.usernameC, pass: this.pass}).then(() => {
           console.log('going to chats now')
-          this.$router.push({name: 'Chats'})
+          this.$router.push({name: 'Group'})
         }, () => {
           console.log('there was an error')
           alert('there was an error')

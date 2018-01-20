@@ -5,6 +5,7 @@
         <nav id="side-menu">
           <h2>AWS Chat</h2>
           <ul>
+            <router-link tag="li" :to="{name: 'Group'}">Group Chat</router-link>
             <router-link @click="restMenuClass()" tag="li" :to="{name: 'Chats'}">My Chats</router-link>
             <router-link tag="li" :to="{name: 'Users'}">Users</router-link>
             <router-link tag="li" :to="{name: 'Invites'}">Invites</router-link>
@@ -83,6 +84,7 @@ export default {
     }
   }
   #view {
+    max-width: 100%;
     width: 100vw;
     overflow-x: hidden;
     &.menu-open {

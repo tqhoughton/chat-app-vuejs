@@ -6,6 +6,12 @@
   
   export default {
     methods: {
+      sendGroupMessage(token, message) {
+        Vue.http.headers.common['Authorization'] = token
+        return Vue.http.post(`${url}/group-chat`, message).then((res) => {
+          return res.body
+        })
+      },
       deleteChat(token, chatId) {
         Vue.http.headers.common['Authorization'] = token
         return Vue.http.delete(`${url}/user/chats/${chatId}`).then((response) => {

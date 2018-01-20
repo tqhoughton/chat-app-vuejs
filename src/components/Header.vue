@@ -2,6 +2,7 @@
   <header>
     <nav>
       <ul>
+        <router-link tag="li" :to="{name: 'Group'}">Group</router-link>
         <router-link tag="li" :to="{name: 'Chats'}">Chats</router-link>
         <router-link tag="li" :to="{name: 'Invites'}">Invites</router-link>
         <router-link tag="li" :to="{name: 'Users'}">Users</router-link>

@@ -1,7 +1,7 @@
 <template>
   <main>
     <h1>AWS Chat</h1>
-    <form class="container" @submit.prevent="triggerSignUp">
+    <form class="container padded" @submit.prevent="triggerSignUp">
       <input type="text" placeholder="username" v-model="username">
       <input type="email" placeholder="email" v-model="email">
       <input type="password" placeholder="password" v-model="pass">

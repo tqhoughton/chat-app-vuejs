@@ -1,7 +1,7 @@
 <template>
   <main>
     <h1>AWS Chat</h1>
-    <div class="container">
+    <div class="container padded">
       <form @submit.prevent="triggerConfirmRegistration">
         <input type="text" placeholder="username" v-model="usernameC">
         <input type="text" placeholder="enter code" v-model="code">

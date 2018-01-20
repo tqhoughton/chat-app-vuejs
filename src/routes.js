@@ -12,6 +12,7 @@ import Invites from './components/Invites.vue'
 import Settings from './components/Settings.vue'
 import ForgotPassword from './components/ForgotPassword.vue'
 import About from './components/About.vue'
+import GroupChat from './components/GroupChat.vue'
 
 import { store } from './store/store'
 
@@ -152,6 +153,14 @@ export default new Router({
       }
     },
     {
+      path: "/group",
+      name: "Group",
+      component: GroupChat,
+      meta: {
+        loadUser: true
+      }
+    },
+    {
       path: "/about",
       name: "About",
       component: About
@@ -159,7 +168,7 @@ export default new Router({
     {
       path: '*',
       redirect: {
-        name: "Chats"
+        name: "Group"
       }
     }
   ]
